@@ -36,8 +36,7 @@ jobs:
     steps:
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        auto-activate-base: true
-        activate-environment: ""
+        activate-environment: "hictk"
 
     - name: conda info
       run: conda search -c conda-forge -c bioconda hictk --info
@@ -47,6 +46,6 @@ jobs:
 
     - name: test
       run: |
-        which hictk
-        hictk --version
+        conda run -n hictk which hictk
+        conda run -n hictk hictk --version
 
