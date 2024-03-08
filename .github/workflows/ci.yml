@@ -1,0 +1,50 @@
+# Copyright (C) 2024 Roberto Rossini (roberros@uio.no)
+# SPDX-License-Identifier: MIT
+
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/ci.yml"
+    tags:
+      - 'v*.*.*'
+
+  pull_request:
+    paths:
+      - ".github/workflows/ci.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  install-hictk:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, macos-14, ubuntu-latest]
+        python-version: ["3.9", "3.12"]
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+    - uses: conda-incubator/setup-miniconda
+
+    - name: conda info
+      run: conda search -c conda-forge -c bioconda hictk --info
+
+    - name: conda install
+      run: conda install -c conda-forge -c bioconda hictk
+
+    - name: test
+      run: |
+        which hictk
+        hictk --version
+
