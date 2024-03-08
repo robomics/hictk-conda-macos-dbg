@@ -30,12 +30,11 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, macos-14, ubuntu-latest]
-        python-version: ["3.9", "3.12"]
 
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: conda-incubator/setup-miniconda
+    - uses: conda-incubator/setup-miniconda@v3
 
     - name: conda info
       run: conda search -c conda-forge -c bioconda hictk --info
