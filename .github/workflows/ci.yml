@@ -39,7 +39,7 @@ jobs:
         activate-environment: "hictk"
 
     - name: conda info
-      run: conda search -c conda-forge -c bioconda hictk --info
+      run: conda search -c conda-forge -c bioconda hictk --info || true
 
     - name: conda install
       if: matrix.platform != 'macos-14'
